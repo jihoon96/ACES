@@ -1,15 +1,21 @@
-/***** crc16.h *****/
-//Tested
-#define CRC16_DNP	0x3D65		// DNP, IEC 870, M-BUS, wM-BUS, ...
-#define CRC16_CCITT	0x1021		// X.25, V.41, HDLC FCS, Bluetooth, ...
+/*
+ * Copyright 2015 Naver Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-//Other polynoms not tested
-#define CRC16_IBM	0x8005		// ModBus, USB, Bisync, CRC-16, CRC-16-ANSI, ...
-#define CRC16_T10_DIF	0x8BB7		// SCSI DIF
-#define CRC16_DECT	0x0589		// Cordeless Telephones
-#define CRC16_ARINC	0xA02B		// ACARS Aplications
+#ifndef _CRC16_H_
+#define _CRC16_H_
 
-#define POLYNOM		CRC16_IBM   // Define the used polynom from one of the aboves
-
-// It calculates the new crc16 with the newByte. Variable crcValue is the actual or initial value (0).
-unsigned short crc16(char *data_p, unsigned short length);
+unsigned short crc16 (const char *buf, int len, unsigned short sd);
+#endif /* _CRC16_H_ */
