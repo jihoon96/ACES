@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+
 static unsigned short crc_table [256] = {
 
 0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5,
@@ -62,7 +66,7 @@ unsigned short CRCCCITT(unsigned char *data, size_t length, unsigned short seed,
 
 } 
 
-# define TEST_SIZE 256
+# define TEST_SIZE 6 
 
 int main(int argc, char **argv) { 
 
@@ -74,12 +78,12 @@ int main(int argc, char **argv) {
    if (argc < 2)
    {
      puts("usage: crcccitt filename");
-     return EXIT_FAILURE;
+     return 0;
    }
    else if (NULL == (fin = fopen(argv[1], "rb")))
    {
      printf("crcccitt: can't open %s\n", argv[1]);
-     return EXIT_FAILURE;
+     return 0;
    }
 
    how_many = fread(buff, 1, TEST_SIZE, fin);
@@ -89,17 +93,17 @@ int main(int argc, char **argv) {
    if (how_many != TEST_SIZE)
    {
      printf("crcccitt: error reading %s\n", argv[1]);
-     return EXIT_FAILURE;
+     return 0;
    }
 
-   the_crc = CRCCCITT(buff, TEST_SIZE, 0x1d0f, 0xffff, 0);
+   the_crc = CRCCCITT(buff, TEST_SIZE, 0, 0);
    printf("Initial CRC value is 0x%04X\n", the_crc);
 
    buff [TEST_SIZE] = (unsigned char)((the_crc >> 8) & 0xff);
    buff [TEST_SIZE + 1] = (unsigned char)(the_crc & 0xff);
 
-   the_crc = CRCCCITT(buff, TEST_SIZE + 2, 0x1d0f, 0xffff, 0);
+   the_crc = CRCCCITT(buff, TEST_SIZE + 2, 0, 0);
    printf("Final CRC value is 0x%04X\n", the_crc);
 
-   return EXIT_SUCCESS;
+   return 0;
 }
