@@ -1,6 +1,6 @@
 #include "my_header.h"
 
-int transmit(unsigned char digest, unsigned short the_crc)
+int transmit(unsigned char *digest, unsigned short the_crc)
 {
 	int s, i, j;
 	struct sockaddr_can addr;
@@ -36,8 +36,8 @@ int transmit(unsigned char digest, unsigned short the_crc)
 	frame[2].data[1] = digest[17];
 	frame[2].data[2] = digest[18];
 	frame[2].data[3] = digest[19];
-	frame[2].data[4] = ((unsigned char)the_crc)[0];
-	frame[2].data[5] = ((unsigned char)the_crc)[1];
+	frame[2].data[4] = ((unsigned char*)the_crc)[0];
+	frame[2].data[5] = ((unsigned char*)the_crc)[1];
 
 	int nbytes;
 	for( i=0; i<3; i++ )

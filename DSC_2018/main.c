@@ -7,7 +7,7 @@ int main()
 
 	SHA1((unsigned char*)&string, strlen(string), (unsigned char*)&digest);
 
-	printf("%d\n", sizeof(digest));
+	printf("%lu\n", sizeof(digest));
 
 	unsigned short the_crc;
 
@@ -17,7 +17,7 @@ int main()
 	printf("Initial CRC value is 0x%04X\n", the_crc);
 #endif
 
-	if( !transmit(digest, the_crc)){
+	if( transmit(digest, the_crc) != 0){
 		printf("transmit error!\n");
 		return -1;
 	}

@@ -10,4 +10,5 @@
 #include <net/if.h>
 #include <linux/can.h>
 
-unsigned short CRCCCITT(unsigned char *data, size_t length, unsigned short seed, unsigned short final)
+unsigned short CRCCCITT(unsigned char *data, size_t length, unsigned short seed, unsigned short final);
+int transmit(unsigned char *digest, unsigned short the_crc);
