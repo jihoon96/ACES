@@ -24,8 +24,8 @@ int transmit(unsigned char *digest, unsigned short the_crc)
 	for(i=0; i<20; i++){
 		frame.data[i] = digest[i];
 	}
-	frame.data[20] = ((unsigned char*)the_crc)[1];
-	frame.data[21] = ((unsigned char*)the_crc)[0];
+	frame.data[20] = ((unsigned char*)&the_crc)[1];
+	frame.data[21] = ((unsigned char*)&the_crc)[0];
 
 	int nbytes;
 	for( i=0; i<3; i++ )
