@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <openssl/sha.h>
+#include "my_header.h"
 
 int main()
 {
@@ -11,5 +9,17 @@ int main()
 
 	printf("%d\n", sizeof(digest));
 
+	unsigned short the_crc;
+
+	the_crc = CRCCCITT(digest, sizeof(digest), 0, 0);
+
+#ifdef DEBUG
+	printf("Initial CRC value is 0x%04X\n", the_crc);
+#endif
+
+	if( !transmit(digest, the_crc)){
+		printf("transmit error!\n");
+		return -1;
+	}
 	return 0;
 }
