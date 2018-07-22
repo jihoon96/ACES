@@ -13,9 +13,9 @@ int main()
 
 	the_crc = CRCCCITT(digest, sizeof(digest), 0, 0);
 
-#ifdef DEBUG
+
 	printf("Initial CRC value is 0x%04X\n", the_crc);
-#endif
+
 
 	if( transmit(digest, the_crc) != 0){
 		printf("transmit error!\n");
