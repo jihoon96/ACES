@@ -17,24 +17,33 @@ int transmit(unsigned char *digest, unsigned short the_crc)
 
 	bind(s, (struct sockaddr *)&addr, sizeof(addr));
 
-	struct canfd_frame frame;
+	struct can_frame frame[3];
 
-	frame.can_id  = 0x123;
-	frame.len = 22;
-	for(i=0; i<20; i++){
-		frame.data[i] = digest[i];
+	for(i=0; i<2; i++){
+		frame[i].can_id  = 0x123;
+		frame[i].can_dlc = 8;
+		for(j=0; j<8; j++){
+			frame[i].data[j] = digest[j+i*8];
+		}
 	}
-	frame.data[20] = ((unsigned char*)&the_crc)[1];
-	frame.data[21] = ((unsigned char*)&the_crc)[0];
+	frame[i].can_id  = 0x123;
+	frame[i].can_dlc = 6;
+	frame[2].data[16] = digest[16];
+	frame[2].data[17] = digest[17];
+	frame[2].data[18] = digest[18];
+	frame[2].data[19] = digest[19];
+	frame[2].data[20] = ((unsigned char*)&the_crc)[1];
+	frame[2].data[21] = ((unsigned char*)&the_crc)[0];
 
 	int nbytes;
 	for( i=0; i<3; i++ )
-		nbytes = write(s, &frame, sizeof(struct canfd_frame));
+		nbytes = write(s, &(frame[i]), sizeof(struct can_frame));
 
-	printf("send to : %d\n data : ", frame.can_id);
-	for (j = 0; j < frame.len; j++)
-		printf("%02X ", frame.data[j]);
-	printf("\n");
-
+	for( i=0; i<3; i++){
+		printf("send to : %d\n data : ", frame[i].can_id);
+		for (j = 0; j < frame[i].can_dlc; j++)
+			printf("%02X ", frame[i].data[j]);
+		printf("\n");
+	}
 	return 0;
 }
