@@ -6,16 +6,16 @@
 void msgCallback(const esc_control::esc_signal msg)
 {
 	unsigned char digest[SHA_DIGEST_LENGTH];
-	char steering[5];
-	char motor[5];
-	if( msg.steering == 1200 )
-		steering = "1200";
-	else if( msg.steering == /*  */ )
-		steering = "/* */";
+	char string[9];
 
-	char string[] = "1200";
+	sprintf(string, "%d%d", msg.steering, msg.motor);
 
 	SHA1((unsigned char*)&string, strlen(string), (unsigned char*)&digest);
+
+	for(int i = 0; i < SHA_DIGEST_LENGTH; i++)
+		sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+
+	printf("SHA digest: %s\n", mdString);
 
 	unsigned short the_crc;
 
