@@ -1,3 +1,12 @@
-all:
-	gcc read.c -o read
-	gcc write.c -o write
+read.o: read.c
+	gcc -c read.c
+	
+write.o: write.c
+	gcc -c write.c
+
+all: read.o write.o
+	gcc -o read read.o 
+	gcc -o write write.o
+
+clean:
+	rm -rf *.o read write

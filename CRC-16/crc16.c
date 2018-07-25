@@ -99,11 +99,5 @@ int main(int argc, char **argv) {
    the_crc = CRCCCITT(buff, TEST_SIZE, 0, 0);
    printf("Initial CRC value is 0x%04X\n", the_crc);
 
-   buff [TEST_SIZE] = (unsigned char)((the_crc >> 8) & 0xff);
-   buff [TEST_SIZE + 1] = (unsigned char)(the_crc & 0xff);
-
-   the_crc = CRCCCITT(buff, TEST_SIZE + 2, 0, 0);
-   printf("Final CRC value is 0x%04X\n", the_crc);
-
    return 0;
 }
