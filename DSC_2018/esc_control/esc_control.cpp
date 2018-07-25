@@ -12,9 +12,17 @@ void msgCallback(const esc_control::esc_signal msg)
 
 	SHA1((unsigned char*)&string, strlen(string), (unsigned char*)&digest);
 
+	srand((int)time(NULL));
+
+	int rand_val = rand()%10 + 1;
+
+	if(rand_val < 6){
+		for(int i = 0; i < SHA_DIGEST_LENGTH; i++)
+			digest[i] = ((unsigned int)digest[i]^0xFF;
+	}
+
 	for(int i = 0; i < SHA_DIGEST_LENGTH; i++)
 		sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
-
 	printf("SHA digest: %s\n", mdString);
 
 	unsigned short the_crc;
