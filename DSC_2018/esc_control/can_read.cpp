@@ -35,21 +35,21 @@ int main(int argc, char **argv)
 
 	/* read one frame */
 	for( i=0; i<1; i++){
-    nbytes= read(s, &frame, sizeof(struct can_frame));
-	printf("Recieved bytes : %d\n", nbytes);
-	printf("Recieved id : %d\n data : ", frame.can_id);
-	for(i = 0; i< frame.can_dlc; i++)
-		printf("%02X ", frame.data[i]);
-	printf("\n");
-
-	digest[0] = frame.data[0];
-	digest[1] = frame.data[1];
-	digest[2] = frame.data[2];
-	digest[3] = frame.data[3];
-	digest[4] = frame.data[4];
-	digest[5] = frame.data[5];
-	digest[6] = frame.data[6];
-	digest[7] = frame.data[7];
+    		nbytes= read(s, &frame, sizeof(struct can_frame));
+		printf("Recieved bytes : %d\n", nbytes);
+		printf("Recieved id : %d\n data : ", frame.can_id);
+		for(i = 0; i< frame.can_dlc; i++)
+			printf("%02X ", frame.data[i]);
+		printf("\n");
+	
+		digest[0] = frame.data[0];
+		digest[1] = frame.data[1];
+		digest[2] = frame.data[2];
+		digest[3] = frame.data[3];
+		digest[4] = frame.data[4];
+		digest[5] = frame.data[5];
+		digest[6] = frame.data[6];
+		digest[7] = frame.data[7];
 	}
 	nbytes= read(s, &frame, sizeof(struct can_frame));
 	printf("Recieved bytes : %d\n", nbytes);
@@ -75,8 +75,19 @@ int main(int argc, char **argv)
 	printf("Recieved CRC value is 0x%04X\n", the_crc);
 
 	unsigned short cal_crc = CRCCCITT(digest, sizeof(digest), 0, 0);
+
 	if( cal_crc == the_crc ){
 		// check SHA-1 command table
+		for(i = 0; i < 5; i++){
+			if(!memcmp(has_cmd[i], digest, 20)){
+				//Run GPIO
+				break;
+			}
+			else
+				//do nothing
+		}
+		//if Reached, ERROR with wrong hash
+		continue;
 	} else{
 		// inverse received SHA-1 bits
 		for(i = 0; i < SHA_DIGEST_LENGTH; i++)

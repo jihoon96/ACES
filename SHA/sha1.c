@@ -5,7 +5,7 @@
 int main()
 {
 	unsigned char digest[SHA_DIGEST_LENGTH];
-	char string[] = "12001200";
+	char string[] = "12001150";
 
 	SHA1((unsigned char*)&string, strlen(string), (unsigned char*)&digest);
 
