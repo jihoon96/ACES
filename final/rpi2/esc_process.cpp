@@ -160,22 +160,36 @@ int main(int argc, char **argv){
 	unsigned char digest[22];
 	unsigned short the_crc;
 
-	for( i=0; i<2; i++){
-    		nbytes= read(s, &frame, sizeof(struct can_frame));
-		printf("Recieved bytes : %d\n", nbytes);
-		printf("Recieved id : %d\n data : ", frame.can_id);
-		for(i = 0; i < frame.can_dlc; i++)
-			printf("%02X ", frame.data[i]);
-		printf("\n");
-		digest[0] = frame.data[0];
-		digest[1] = frame.data[1];
-		digest[2] = frame.data[2];
-		digest[3] = frame.data[3];
-		digest[4] = frame.data[4];
-		digest[5] = frame.data[5];
-		digest[6] = frame.data[6];
-		digest[7] = frame.data[7];
-	}
+	nbytes= read(s, &frame, sizeof(struct can_frame));
+	printf("Recieved bytes : %d\n", nbytes);
+	printf("Recieved id : %d\n data : ", frame.can_id);
+	for(i = 0; i < frame.can_dlc; i++)
+		printf("%02X ", frame.data[i]);
+	printf("\n");
+	digest[0] = frame.data[0];
+	digest[1] = frame.data[1];
+	digest[2] = frame.data[2];
+	digest[3] = frame.data[3];
+	digest[4] = frame.data[4];
+	digest[5] = frame.data[5];
+	digest[6] = frame.data[6];
+	digest[7] = frame.data[7];
+
+	nbytes= read(s, &frame, sizeof(struct can_frame));
+	printf("Recieved bytes : %d\n", nbytes);
+	printf("Recieved id : %d\n data : ", frame.can_id);
+	for(i = 0; i < frame.can_dlc; i++)
+		printf("%02X ", frame.data[i]);
+	printf("\n");
+	digest[8] = frame.data[0];
+	digest[9] = frame.data[1];
+	digest[10] = frame.data[2];
+	digest[11] = frame.data[3];
+	digest[12] = frame.data[4];
+	digest[13] = frame.data[5];
+	digest[14] = frame.data[6];
+	digest[15] = frame.data[7];
+
 
 	nbytes= read(s, &frame, sizeof(struct can_frame));
 	printf("Recieved bytes : %d\n", nbytes);
