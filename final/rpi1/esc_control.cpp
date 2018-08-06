@@ -63,6 +63,23 @@ static unsigned short crc_table [256] = {
 0x2e93, 0x3eb2, 0x0ed1, 0x1ef0
 };
 
+unsigned short CRCCCITT(unsigned char *data, size_t length, unsigned short seed, unsigned short final)
+{ 
+
+   size_t count;
+   unsigned int crc = seed;
+   unsigned int temp;
+
+   for (count = 0; count < length; ++count)
+   {
+     temp = (*data++ ^ (crc >> 8)) & 0xff;
+     crc = crc_table[temp] ^ (crc << 8);
+   }
+
+   return (unsigned short)(crc ^ final);
+
+} 
+
 void msgCallback(const esc_control::esc_signal msg)
 {
 	int steering = msg.steering;
@@ -76,25 +93,12 @@ void msgCallback(const esc_control::esc_signal msg)
 
 	unsigned short the_crc;
 
-	// the_crc = unsigned short CRCCCITT(unsigned char *data, size_t length, unsigned short seed, unsigned short final)
-	size_t count;
-	unsigned int crc = 0;
-	unsigned int temp;
+	the_crc = CRCCCITT(digest,sizeof(digest),0,0);
+	
+	printf("Initial CRC value is 0x%04X\n", the_crc);
 
-    for (count = 0; count < sizeof(digest); ++count)
-    {
-      	temp = ((*digest)++ ^ (crc >> 8)) & 0xff;
-    	crc = crc_table[temp] ^ (crc << 8);
-    }
-
- 	//return (unsigned short)(crc ^ final);
-
-   the_crc = (unsigned short)(crc ^ 0);
-
-   printf("Initial CRC value is 0x%04X\n", the_crc);
-
-   //int transmit(unsigned char *digest, unsigned short the_crc)
-   int s, i, j;
+	//int transmit(unsigned char *digest, unsigned short the_crc)
+	int s, i, j;
 	struct sockaddr_can addr;
 	struct ifreq ifr;
 
