@@ -14,6 +14,8 @@
 #include <cstdint>
 #include <cstring>
 
+using namespace std;
+
 static unsigned short crc_table [256] = {
 
 0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5,
@@ -66,7 +68,7 @@ void msgCallback(const esc_control::esc_signal msg)
 	int steering = msg.steering;
 	int motor = msg.motor;
 	char string[8];
-	sprintf(string, "%d%d", a,b);
+	sprintf(string, "%d%d", steering,motor);
 	cout << "Received : " << string << endl;
 
 	unsigned char digest[SHA_DIGEST_LENGTH];
@@ -76,18 +78,18 @@ void msgCallback(const esc_control::esc_signal msg)
 
 	// the_crc = unsigned short CRCCCITT(unsigned char *data, size_t length, unsigned short seed, unsigned short final)
 	size_t count;
-	unsigned int crc = seed;
+	unsigned int crc = 0;
 	unsigned int temp;
 
-    for (count = 0; count < length; ++count)
+    for (count = 0; count < sizeof(digest); ++count)
     {
-      	temp = (*data++ ^ (crc >> 8)) & 0xff;
+      	temp = ((*digest)++ ^ (crc >> 8)) & 0xff;
     	crc = crc_table[temp] ^ (crc << 8);
     }
 
  	//return (unsigned short)(crc ^ final);
 
-   the_crc = (unsigned short)(crc ^ final);
+   the_crc = (unsigned short)(crc ^ 0);
 
    printf("Initial CRC value is 0x%04X\n", the_crc);
 
