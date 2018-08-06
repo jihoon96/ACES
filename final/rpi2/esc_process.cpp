@@ -138,29 +138,55 @@ int main(int argc, char **argv){
 	/* print received CRC-16 */
 	printf("Recieved CRC value is 0x%04X\n", the_crc);
 
-	unsigned short cal_crc = CRCCCITT(digest, sizeof(digest), 0, 0);
+	unsigned short cal_crc;
+	// cal_crc = CRCCCITT(digest, sizeof(digest), 0, 0);
+	size_t count;
+	unsigned int crc = 0;
+	unsigned int temp;
+
+    for (count = 0; count < sizeof(digest); ++count)
+    {
+      	temp = ((*digest)++ ^ (crc >> 8)) & 0xff;
+    	crc = crc_table[temp] ^ (crc << 8);
+    }
+
+ 	//return (unsigned short)(crc ^ final);
+
+   	cal_crc = (unsigned short)(crc ^ 0);
 
 	cout << "cal_crc : " << cal_crc << endl;
 
 	if( cal_crc == 0 ){
 		// check SHA-1 command table
 		for(i = 0; i < 5; i++){
-			if(!memcmp(has_cmd[i], digest, 20)){
+			if(!memcmp(hash_cmd[i], digest, 20)){
 				GPIO_RUN(i);
 				break;
 			}
 		}
 	} else{
 		// inverse received SHA-1 bits
-		for(i = 0; i < SHA_DIGEST_LENGTH; i++)
+		for(i = 0; i < 20; i++)
 			digest[i] = (unsigned int)digest[i]^0xFF;
 		// calculate CRC-16-CCITT again
-		cal_crc = CRCCCITT(digest, digest, sizeof(digest), 0, 0);
+
+		// cal_crc = CRCCCITT(digest, digest, sizeof(digest), 0, 0);
+		crc = 0;
+		temp = 0;
+		for (count = 0; count < sizeof(digest); ++count)
+   		{
+    	  	temp = ((*digest)++ ^ (crc >> 8)) & 0xff;
+    		crc = crc_table[temp] ^ (crc << 8);
+    	}
+ 		//return (unsigned short)(crc ^ final);
+	   	cal_crc = (unsigned short)(crc ^ 0);
+	
 		cout << "Inversed data cal_crc : " << cal_crc << endl;
+		
 		if( cal_crc == 0 ){
 			// check SHA-1 command table
 			for(i = 0; i < 5; i++){
-				if(!memcmp(has_cmd[i], digest, 20)){
+				if(!memcmp(hash_cmd[i], digest, 20)){
 					GPIO_RUN(i);
 					break;
 				}
