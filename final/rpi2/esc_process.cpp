@@ -2,6 +2,7 @@
 #include <pigpio.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -92,7 +93,7 @@ int main(int argc, char **argv){
 	struct can_frame frame;
 
 	int nbytes;
-	unsigned char digest[SHA_DIGEST_LENGTH+2];
+	unsigned char digest[22];
 	unsigned short the_crc;
 
 	for( i=0; i<2; i++){
@@ -129,8 +130,8 @@ int main(int argc, char **argv){
 	digest[21] = frame.data[5];
 
 	/* print received SHA-1 */
-	char mdString[SHA_DIGEST_LENGTH*2+1];
-	for(i = 0; i < SHA_DIGEST_LENGTH; i++)
+	char mdString[20*2+1];
+	for(i = 0; i < 20; i++)
 		sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
 	printf("Recieved SHA-1 : %s\n", mdString);
 
