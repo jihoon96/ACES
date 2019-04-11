@@ -4,3 +4,4 @@ clean:
 
 all:
 	(cd src; make all)
+	(cd bin; make all)

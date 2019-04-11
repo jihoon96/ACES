@@ -1,2 +1,7 @@
+all:
+	(export LD_LIBRARY_PATH=.; ./myprog)
+
 clean:
-	rm myprog
+	rm -rf *.log
+	rm -rf *.so
+	rm -rf myprog

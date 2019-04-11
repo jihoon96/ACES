@@ -8,7 +8,7 @@ CFLAGS 	= -g $(INC) -c $(DEFINES) -Wno-deprecated -fPIC
 LIB		= -lBaseType # libBaseType.so
 LIB_PATH = -L$(LIB_HOME)/bin
 
-OBJS	= main.o
+OBJS	= main.o CStudent.o
 PROG_NAME = myprog
 APP_HOME = ../bin
 

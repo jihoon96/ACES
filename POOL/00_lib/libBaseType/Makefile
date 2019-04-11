@@ -4,7 +4,7 @@ INC		 =
 DEFINES  = -DDEBUG
 
 CFLAGS 	= -g $(INC) -c $(DEFINES) -Wno-deprecated -fPIC
-OBJS	= Critical.o
+OBJS	= Critical.o CObject.o
 
 vpath %.cpp $(SRC_HOME)
 vpath %.h	$(SRC_HOME)
