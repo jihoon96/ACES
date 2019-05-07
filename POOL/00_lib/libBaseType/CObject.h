@@ -32,7 +32,6 @@ namespace ACES{
 
 			// selector
 			string const& get_cid() const { return m_cid; };
-			// const뒤에 &를 붙이는 이유는 caller쪽에서 객체를 복사하지 않고 그대로 받겠다는 의미이다.
 
 			// actions (interface)
 //			virtual int do_update(int flag) = 0;
